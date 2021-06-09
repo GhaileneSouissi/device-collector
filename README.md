@@ -52,6 +52,7 @@ This API receive Http Json Payload, store and aggregate in cache, and then using
 
 
 ## Pipeline
+Before lauching the pipeline, make sure to have docker and sbt installed
 To launch pipeline : ./pipeline.sh
 
 ```yaml
@@ -60,21 +61,32 @@ pipeline:
   2- build and assembly RPM
   3- build image
   4- launch API and DB
+  5- Check http://localhost:9001
 ```
 
 
 ## Problems
-This library contains services used in both uds stream and uds api projects
 
+### Concurrency and Consistency
+- the first problem encountered was how to deal with concurrency and data consistency when storing data in a shared mutubale cache. 
+  Semaphore was a primitive but costly solution
 
-### AMAZON S3 Service
-- Store File in PANAMA
-- Download File from PANAMA
-- Delete File from PANAMA
+### Memory
+- the second problem was how the cache will deal with the increasing http request with time. if we have a huge volume of data, the Sever RAM wont be able to store all the data
 
-### ElasticSearch Service
-- Index Metadata in ES
-- Update Metadata in ES
-- Get Metadata from ES
+### Scalability
+- if we want to handle more users, and more data, distributing the API is a solution, but how can we manage the consistency of data if each instance have its own memory cache, such as the schedular 
 
 ## Solutions
+### Actor Model
+- to resolve semaphore and Lock problem, we can use an actor system (akka) such as described below
+![ACTOR](assets/ActorModel.png)
+### Distributed cache database: Reddis
+- to assure distribured data consistency and to handle the volume of a data, a Distributed Cache dataBase such as Reddis cane be an answer
+![REDDIS](assets/reddis.png)
+### ElasticSearch
+- ElasticSearch is another option to aggregate all the data stored
+![ELASTIC](assets/ES.png)
+### Kafka
+- using windowed kafka, we can use kafka and an event-driven architecture to provide a scalable, real-time solution
+![KAFKA](assets/kafka.png)
