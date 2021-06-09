@@ -54,6 +54,7 @@ This API receive Http Json Payload, store and aggregate in cache, and then using
 ## Pipeline
 Before lauching the pipeline, make sure to have docker and sbt installed
 To launch pipeline : ./pipeline.sh
+Otherwise, use ./pipeline.sh simple, it will launch a preassmblied version of the API
 
 ```yaml
 pipeline:

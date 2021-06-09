@@ -19,7 +19,7 @@ function build_step() {
 
   ls -l api/target/universal/
   unzip api/target/universal/$APP_NAME-${set_version}.zip -d api/target/universal/
-  mv api/target/universal/$APP_NAME-$set_version api/target/universal/$APP_NAME
+  mv api/target/universal/$APP_NAME-$set_version $APP_NAME
 }
 
 function docker_build_step() {
@@ -33,7 +33,13 @@ function docker_run_step() {
   docker-compose up -d
 }
 
-test_step
-build_step
-docker_build_step
-docker_run_step
+if [[ $@ ]]; then
+  docker_build_step
+  docker_run_step
+else
+    test_step
+    build_step
+    docker_build_step
+    docker_run_step
+fi
+
