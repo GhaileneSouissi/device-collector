@@ -35,15 +35,7 @@ class StatsController @Inject()(components: ControllerComponents)
           case JsSuccess(httpRequest, _) =>
             val res = Datasource.states.getSynchronized(CustomerContent(httpRequest.customer, httpRequest.content)) match {
               case Some(request) =>
-                val updatedRequest = HttpRequest(
-                  token = aggregate(request.token, httpRequest.token),
-                  customer = httpRequest.customer,
-                  content = httpRequest.content,
-                  timespan = request.timespan + httpRequest.timespan,
-                  cdn = request.cdn + httpRequest.cdn,
-                  p2p = request.p2p + httpRequest.p2p,
-                  sessionDuration = request.sessionDuration + httpRequest.sessionDuration
-                )
+                val updatedRequest = aggregateRequest(httpRequest, request)
                 Datasource.states addSynchronized updatedRequest
               case _ => Datasource.states addSynchronized httpRequest
             }
@@ -59,5 +51,16 @@ class StatsController @Inject()(components: ControllerComponents)
     if (!attribue.split(",").toSet.contains(newEelem)) attribue.concat(s",${newEelem}")
     else attribue
   }
+
+  private def aggregateRequest(httpRequest: HttpRequest, request: HttpRequest) =
+    HttpRequest(
+      token = aggregate(request.token, httpRequest.token),
+      customer = httpRequest.customer,
+      content = httpRequest.content,
+      timespan = request.timespan + httpRequest.timespan,
+      cdn = request.cdn + httpRequest.cdn,
+      p2p = request.p2p + httpRequest.p2p,
+      sessionDuration = request.sessionDuration + httpRequest.sessionDuration
+    )
 
 }
