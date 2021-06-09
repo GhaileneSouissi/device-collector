@@ -81,13 +81,13 @@ pipeline:
 ## Solutions
 ### Actor Model
 - to resolve semaphore and Lock problem, we can use an actor system (akka) such as described below
-![ACTOR](assets/ActorModel.png)
+![ACTOR](assets/actor.png)
 ### Distributed cache database: Reddis
 - to assure distribured data consistency and to handle the volume of a data, a Distributed Cache dataBase such as Reddis cane be an answer
 ![REDDIS](assets/reddis.png)
 ### ElasticSearch
 - ElasticSearch is another option to aggregate all the data stored
-![ELASTIC](assets/ES.png)
+![ELASTIC](assets/es.png)
 ### Kafka
 - using windowed kafka, we can use kafka and an event-driven architecture to provide a scalable, real-time solution
 ![KAFKA](assets/kafka.png)
