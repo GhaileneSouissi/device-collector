@@ -5,7 +5,7 @@ ARG application_name
 ENV application_name=$application_name \
     java_opts=$JAVA_OPTS
 
-COPY api/target/universal/$application_name /opt/$application_name
+COPY $application_name /opt/$application_name
 
 EXPOSE 9000
 

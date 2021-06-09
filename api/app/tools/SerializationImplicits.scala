@@ -34,6 +34,7 @@ object SerializationImplicits {
               error(s"Missing attributes [${
                 maybeMissingAttribute.mkString(",")
               }]")
+            case _ => error("Undefined Error")
 
           }
         case _ =>
