@@ -37,7 +37,7 @@ This API receive Http Json Payload, store and aggregate in cache, and then using
                                           ⋁              
                               **************************
                               *                        *
-              [device]   ->   *  DEVICE-COLLECTOR-UDS  * -> [response]
+              [device]   ->   *  DEVICE-COLLECTOR-API  * -> [response]
                               *                        *
                               **************************
               -> request/response
