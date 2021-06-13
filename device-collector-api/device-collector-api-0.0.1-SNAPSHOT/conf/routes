@@ -1,0 +1,17 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+
+# Technical routes
+GET  /_healthcheck                                      controllers.TechnicalController.getHealth
+
+# Replay routes
+POST  /api/v1/stats                                    controllers.StatsController.saveStats
+
+# Swagger Specific routes
+GET         /swagger.json                               controllers.ApiHelpController.getResources
+
+# Swagger UI ressources
+GET         /                                           controllers.Assets.at(path="/public/swagger-ui",file="index.html")
+GET         /*file                                      controllers.Assets.at(path="/public/swagger-ui",file)

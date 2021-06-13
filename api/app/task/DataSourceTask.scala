@@ -1,30 +1,19 @@
 package task
 
-import java.time.LocalDateTime
-
-import akka.actor.ActorSystem
+import actors.Implicits
+import akka.actor.typed.scaladsl.AskPattern._
 import javax.inject.Inject
-import play.api.Logger
-import repositories.Datasource
-import tools.AppSettings
-import tools.SynchronizedMap._
+import tools.Models
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * a scheduled task to save data into DB and clear memory cache
- *
- * @param actorSystem
- * @param executionContext
- */
-class DataSourceTask @Inject()(actorSystem: ActorSystem)(implicit executionContext: ExecutionContext) {
+ **/
+class DataSourceTask @Inject()(implicit executionContext: ExecutionContext) extends Implicits {
 
-  actorSystem.scheduler.schedule(initialDelay = AppSettings.SchedularInterval, interval = AppSettings.SchedularInterval) {
-    for {
-      _ <- Datasource.saveOrUpdate(Datasource.states)
-      b = Datasource.states.clearSynchronized()
-    } yield b
-
-    Logger.info(s"saving files, and clearing cache... ${LocalDateTime.now()}")
+  system.scheduler.scheduleAtFixedRate(1.minutes, 1.minutes) { () =>
+    val result: Future[Models.StoreResponse] = actorRef.ask(ref => Models.StoreAndClear(ref))
   }
 }

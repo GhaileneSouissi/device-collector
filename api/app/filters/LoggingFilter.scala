@@ -2,13 +2,13 @@ package filters
 
 import akka.stream.Materializer
 import javax.inject.Inject
-import play.api.Logger
+import play.api.{Logger, Logging}
 import play.api.mvc.{Filter, RequestHeader, Result}
 import play.api.routing.{HandlerDef, Router}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class LoggingFilter @Inject()(implicit val mat: Materializer, ec: ExecutionContext) extends Filter {
+class LoggingFilter @Inject()(implicit val mat: Materializer, ec: ExecutionContext) extends Filter with Logging {
   // As a share variable, atomicity should be good but expensive for this case.
   private /* @volatile */ var countLog = 0
 
@@ -23,7 +23,7 @@ class LoggingFilter @Inject()(implicit val mat: Materializer, ec: ExecutionConte
         val action = handlerDef.controller + "." + handlerDef.method
         // Limit duration time (500ms) by request or limit value to log every 100 times.
         if (requestTime >= 500L || countLog % 100 == 0)
-          Logger.info(s"$action took ${requestTime}ms and returned ${result.header.status}")
+          logger.info(s"$action took ${requestTime}ms and returned ${result.header.status}")
       }
       countLog += 1 // This is for log only.
       result.withHeaders("Request-Time" -> requestTime.toString)

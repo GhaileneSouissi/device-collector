@@ -14,7 +14,7 @@ lazy val api = project
     libraryDependencies ++= Seq(
       guice,
       ws,
-      "io.swagger"               %% "swagger-play2"           % "1.6.0",
+      "io.swagger"               %% "swagger-play2"           % "1.7.1",
       "io.spray"                 %% "spray-json"              % "1.3.6",
 
       "com.typesafe.slick"       %% "slick"                   % "3.3.0",

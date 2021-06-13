@@ -9,5 +9,4 @@ object AppSettings {
 
   val SchedularInterval = configuration.getDuration("common.schedular.interval", MINUTES).minutes
 
-
 }
